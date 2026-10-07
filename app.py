@@ -34,14 +34,17 @@ trades = []
 
 print("made it to the loop")
 for i in range(1, len(df)):
-    # signal from previous bar, no lookahead
+    # check sma state
     # nan smas at the start -> stays flat
     if df["sma_fast"][i - 1] > df["sma_slow"][i - 1]:
         target = 1
     else:
         target = 0
 
-    open_price = df["open"][i]
+    if target == 1:
+        open_price = df["low"][i]
+    else:
+        open_price = df["high"][i]
 
     if target == 1 and coins == 0:
         coins = (cash * (1 - fee)) / open_price
